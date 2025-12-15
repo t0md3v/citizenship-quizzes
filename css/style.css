@@ -337,3 +337,14 @@ button.retake:hover {
         font-size: 0.9em;
     }
 }
+
+/* Preventing re-sizing during quiz */
+
+#quiz {
+    transition: none;       /* optional: prevent any resizing animation */
+}
+
+#quiz .choices label {
+    display: block;
+    margin-bottom: 8px;
+}

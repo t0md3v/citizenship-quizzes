@@ -310,5 +310,10 @@ function resetQuiz() {
    START QUIZ
 ========================== */
 shuffleQuestionsAndChoices();
+// calculate the tallest question and set fixed height
+const tallestHeight = calculateTallestQuestionHeight();
+quizDiv.style.minHeight = tallestHeight + "px";
+quizDiv.style.maxHeight = tallestHeight + "px";
+quizDiv.style.overflow = "hidden";
 startTimer();
 loadQuestion();
