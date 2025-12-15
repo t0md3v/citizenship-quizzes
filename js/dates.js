@@ -147,6 +147,7 @@ function calculateTallestQuestionHeight() {
     return maxHeight;
 }
 
+
 /* ==========================
    LOAD QUESTION
    ========================== */
@@ -177,6 +178,11 @@ function loadQuestion() {
         </div>
     `;
 
+    // Only fix height for quiz questions
+    quizDiv.style.minHeight = tallestHeight + "px";
+    quizDiv.style.maxHeight = tallestHeight + "px";
+    quizDiv.style.overflow = "hidden";
+
     prevBtn.disabled = currentQuestion === 0;
     nextBtn.textContent = currentQuestion === questions.length - 1 ? "Score Quiz" : "Next";
 
@@ -184,24 +190,22 @@ function loadQuestion() {
     document.querySelectorAll('input[name="choice"]').forEach(input => {
         input.addEventListener('change', (e) => {
             saveAnswer();
-
-            // highlight the selected label briefly
             const label = e.target.closest('label');
             label.classList.add('selected');
-
             setTimeout(() => {
                 label.classList.remove('selected');
-
                 if (currentQuestion < questions.length - 1) {
                     currentQuestion++;
                     loadQuestion();
                 } else {
                     endQuiz();
                 }
-            }, 200); // 0.2 second delay
+            }, 200);
         });
     });
 }
+
+
 
 
 /* ==========================
@@ -230,6 +234,11 @@ nextBtn.addEventListener("click", () => {
 function endQuiz() {
     swipeEnabled = false;
     clearInterval(timerInterval);
+
+    // Remove height restriction so review can expand
+    quizDiv.style.minHeight = "auto";
+    quizDiv.style.maxHeight = "none";
+    quizDiv.style.overflow = "visible";
 
     let wrongAnswers = 0;
     let reviewHTML = "";
@@ -292,9 +301,7 @@ function endQuiz() {
     document.getElementById("retakeBtnSticky").onclick = resetQuiz;
 }
 
-/* ==========================
-   RESET QUIZ
-========================== */
+
 function resetQuiz() {
     swipeEnabled = true;
     shuffleQuestionsAndChoices();
@@ -302,6 +309,13 @@ function resetQuiz() {
     userAnswers = [];
     remainingTime = TOTAL_TIME;
     prevBtn.style.display = "inline-block";
+    nextBtn.style.display = "inline-block";
+
+    // recalc tallest height for the new question set
+    const newTallestHeight = calculateTallestQuestionHeight();
+    quizDiv.style.minHeight = newTallestHeight + "px";
+    quizDiv.style.maxHeight = newTallestHeight + "px";
+
     startTimer();
     loadQuestion();
 }
@@ -310,10 +324,6 @@ function resetQuiz() {
    START QUIZ
 ========================== */
 shuffleQuestionsAndChoices();
-// calculate the tallest question and set fixed height
-const tallestHeight = calculateTallestQuestionHeight();
-quizDiv.style.minHeight = tallestHeight + "px";
-quizDiv.style.maxHeight = tallestHeight + "px";
-quizDiv.style.overflow = "hidden";
+const tallestHeight = calculateTallestQuestionHeight(); // initial question set
 startTimer();
 loadQuestion();
