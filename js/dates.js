@@ -1,25 +1,6 @@
 /* ==========================
    QUESTIONS (NEW SET)
    ========================== */
-
-/* TOPICS left
-
-
-
-
-
-
-
-
-
-
-
--1969 * Parliament passed the Official Languages Act
--
-
-
-*/
-
 const originalQuestions = [
     { question: "Canada resisted U.S. invasion during which years?", choices: ["1939-1945", "1914-1918", "1812-1814", "1999"], correct: 2 },
     { question: "This document was signed in 1215.", choices: ["Confederation", "Magna Carta", "Constitutional Act", "Alberta Act"], correct: 1 },
@@ -41,7 +22,7 @@ const originalQuestions = [
     { question: "John Cabot reached Canada’s east coast in:", choices: ["1453", "1497", "1534", "1608"], correct: 1 },
     { question: "In which year did the British Parliament abolish slavery throughout the Empire?", choices: ["1933", "1929", "1829", "1833"], correct: 3 },
     { question: "In which year did women gain the right to vote in Canada?", choices: ["1812", "1945", "1918", "1215"], correct: 2 },
-    { question: "What happened in 1670?", choices: ["The Hudsons Bay Company was founded", "The Seven Years' War Ended", "Tim Horton's was founded", "Louis Riel was executed"], correct: 0 }, // Defaulted to first choice being correct answer
+    { question: "What happened in 1670?", choices: ["The Hudsons Bay Company was founded", "The Seven Years' War Ended", "Tim Horton's was founded", "Louis Riel was executed"], correct: 0 },
     { question: "When was the Seven Years' War?", choices: ["1756-1763", "1911-1918", "1939-1946", "2017-2024"], correct: 0 },
     { question: "TRUE or FALSE: The Battle of the Plains of Abraham happened during the Seven Years' War.", choices: ["True", "False"], correct: 0 },
     { question: "What Happened in 1763?", choices: ["This year marked the end of New France and the beginning of British control over what is now Canada", "The Seven Years' War began", "The Hudson's Bay Company was founded", "Britain lost control of Canada to the French"], correct: 0 },
@@ -85,13 +66,10 @@ function shuffleQuestionsAndChoices() {
 }
 
 /* ==========================
-    HAPTIC FEEDBACK (FOR MOBILE)
+   HAPTIC FEEDBACK
    ========================== */
-   
 function vibrate() {
-  if (navigator.vibrate) {
-    navigator.vibrate(20); // tiny buzz, not a chainsaw 😏
-  }
+    if (navigator.vibrate) navigator.vibrate(20);
 }
 
 /* ==========================
@@ -112,32 +90,17 @@ const prevBtn = document.getElementById("prevBtn");
 let touchStartX = 0;
 let touchEndX = 0;
 
-document.addEventListener('touchstart', e => {
-  touchStartX = e.changedTouches[0].screenX;
-});
-
-document.addEventListener('touchend', e => {
-  touchEndX = e.changedTouches[0].screenX;
-  handleSwipe();
-});
+document.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; });
+document.addEventListener('touchend', e => { touchEndX = e.changedTouches[0].screenX; handleSwipe(); });
 
 function handleSwipe() {
-  if (!swipeEnabled) return; // nope 🚫
+    if (!swipeEnabled) return;
+    const swipeDistance = touchEndX - touchStartX;
+    if (Math.abs(swipeDistance) < 50) return;
 
-  const swipeDistance = touchEndX - touchStartX;
-  if (Math.abs(swipeDistance) < 50) return;
-
-  saveAnswer();
-
-  if (swipeDistance < 0 && currentQuestion < questions.length - 1) {
-    vibrate();
-    currentQuestion++;
-    loadQuestion();
-  } else if (swipeDistance > 0 && currentQuestion > 0) {
-    vibrate();
-    currentQuestion--;
-    loadQuestion();
-  }
+    saveAnswer();
+    if (swipeDistance < 0 && currentQuestion < questions.length - 1) { vibrate(); currentQuestion++; loadQuestion(); }
+    else if (swipeDistance > 0 && currentQuestion > 0) { vibrate(); currentQuestion--; loadQuestion(); }
 }
 
 /* ==========================
@@ -147,12 +110,7 @@ function startTimer() {
     updateTimerDisplay();
     timerInterval = setInterval(() => {
         remainingTime--;
-        if (remainingTime < 0) {
-            clearInterval(timerInterval);
-            alert("Time is up! The quiz will be submitted automatically.");
-            endQuiz();
-            return;
-        }
+        if (remainingTime < 0) { clearInterval(timerInterval); alert("Time is up!"); endQuiz(); return; }
         updateTimerDisplay();
     }, 1000);
 }
@@ -161,6 +119,32 @@ function updateTimerDisplay() {
     const minutes = String(Math.floor(remainingTime / 60)).padStart(2, '0');
     const seconds = String(remainingTime % 60).padStart(2, '0');
     document.getElementById("timer").textContent = `Time Remaining: ${minutes}:${seconds}`;
+}
+
+/* ==========================
+   CALCULATE MAX QUESTION HEIGHT
+   ========================== */
+function calculateTallestQuestionHeight() {
+    const tempDiv = document.createElement('div');
+    tempDiv.style.position = 'absolute';
+    tempDiv.style.visibility = 'hidden';
+    tempDiv.style.width = quizDiv.offsetWidth + 'px';
+    tempDiv.style.padding = '20px';
+    document.body.appendChild(tempDiv);
+
+    let maxHeight = 0;
+    questions.forEach(q => {
+        tempDiv.innerHTML = `
+            <div class="question">${q.question}</div>
+            <div class="choices">
+                ${q.choices.map(c => `<label>${c}</label>`).join('')}
+            </div>
+        `;
+        if (tempDiv.offsetHeight > maxHeight) maxHeight = tempDiv.offsetHeight;
+    });
+
+    document.body.removeChild(tempDiv);
+    return maxHeight;
 }
 
 /* ==========================
@@ -175,7 +159,12 @@ function loadQuestion() {
     quizDiv.innerHTML = `
         <div class="question-counter">Question ${currentQuestion + 1} of ${questions.length}</div>
         <div class="progress-bar" style="background: #e0e0e0; border-radius: 5px; overflow: hidden; height: 12px; margin-bottom: 15px;">
-            <div style="width: ${progressPercent}%; height: 100%; background: #007bff;"></div>
+            <div class="progress-fill" style="
+                width: ${progressPercent}%;
+                height: 100%;
+                background: #007bff;
+                transition: width 0.5s ease;
+            "></div>
         </div>
         <div class="question">${q.question}</div>
         <div class="choices">
@@ -192,28 +181,28 @@ function loadQuestion() {
     nextBtn.textContent = currentQuestion === questions.length - 1 ? "Score Quiz" : "Next";
 
     // Auto-advance listener
-document.querySelectorAll('input[name="choice"]').forEach(input => {
-    input.addEventListener('change', (e) => {
-        saveAnswer();
+    document.querySelectorAll('input[name="choice"]').forEach(input => {
+        input.addEventListener('change', (e) => {
+            saveAnswer();
 
-        // highlight the selected label
-        const label = e.target.closest('label');
-        label.classList.add('selected');
+            // highlight the selected label briefly
+            const label = e.target.closest('label');
+            label.classList.add('selected');
 
-        setTimeout(() => {
-            label.classList.remove('selected');
+            setTimeout(() => {
+                label.classList.remove('selected');
 
-            if (currentQuestion < questions.length - 1) {
-                currentQuestion++;
-                loadQuestion();
-            } else {
-                endQuiz();
-            }
-        }, 200); // 0.2 second delay
+                if (currentQuestion < questions.length - 1) {
+                    currentQuestion++;
+                    loadQuestion();
+                } else {
+                    endQuiz();
+                }
+            }, 200); // 0.2 second delay
+        });
     });
-});
-
 }
+
 
 /* ==========================
    SAVE ANSWER
@@ -227,21 +216,12 @@ function saveAnswer() {
    NAV BUTTONS
    ========================== */
 prevBtn.addEventListener("click", () => {
-    if (currentQuestion > 0) {
-        saveAnswer();
-        currentQuestion--;
-        loadQuestion();
-    }
+    if (currentQuestion > 0) { saveAnswer(); currentQuestion--; loadQuestion(); }
 });
-
 nextBtn.addEventListener("click", () => {
     saveAnswer();
-    if (currentQuestion < questions.length - 1) {
-        currentQuestion++;
-        loadQuestion();
-    } else {
-        endQuiz();
-    }
+    if (currentQuestion < questions.length - 1) { currentQuestion++; loadQuestion(); }
+    else { endQuiz(); }
 });
 
 /* ==========================
@@ -275,11 +255,9 @@ function endQuiz() {
     const minutes = Math.floor(totalElapsed / 60);
     const seconds = totalElapsed % 60;
 
-    // Hide original nav buttons
     prevBtn.style.display = "none";
     nextBtn.style.display = "none";
 
-    // Render results and review with green sticky Retake button
     quizDiv.innerHTML = `
         <div class="result ${passed ? 'pass' : 'fail'}">
             Result: ${passed ? 'PASS' : 'FAIL'}<br>
@@ -289,7 +267,6 @@ function endQuiz() {
             Time Taken: ${minutes} min ${seconds} sec
         </div>
 
-        <!-- Top buttons -->
         <div class="top-buttons" style="text-align:center; margin-bottom:20px;">
             <button onclick="window.location.href='index.html'">Home</button>
             <button onclick="window.location.href='history.html'">History Quiz</button>
@@ -299,20 +276,7 @@ function endQuiz() {
 
         <div class="review"><h3>Quiz Review</h3>${reviewHTML}</div>
 
-        <!-- Green sticky Retake Quiz button -->
-        <div style="
-            position: sticky;
-            bottom: 20px;
-            display: inline-block;
-            margin: 20px auto;
-            padding: 5px 10px;
-            background: #fff;
-            border-radius: 8px;
-            z-index: 1000;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-            left: 50%;
-            transform: translateX(-50%);
-        ">
+        <div style="position: sticky; bottom: 20px; display: inline-block; margin: 20px auto; padding: 0; z-index: 1000; left: 50%; transform: translateX(-50%);">
             <button id="retakeBtnSticky" style="
                 padding: 10px 20px;
                 font-size: 16px;
@@ -325,24 +289,18 @@ function endQuiz() {
         </div>
     `;
 
-    // Attach Retake handler
     document.getElementById("retakeBtnSticky").onclick = resetQuiz;
 }
 
-
-
-
-
 /* ==========================
    RESET QUIZ
-   ========================== */
+========================== */
 function resetQuiz() {
     swipeEnabled = true;
     shuffleQuestionsAndChoices();
     currentQuestion = 0;
     userAnswers = [];
     remainingTime = TOTAL_TIME;
-    nextBtn.classList.remove("retake");
     prevBtn.style.display = "inline-block";
     startTimer();
     loadQuestion();
@@ -350,7 +308,7 @@ function resetQuiz() {
 
 /* ==========================
    START QUIZ
-   ========================== */
+========================== */
 shuffleQuestionsAndChoices();
 startTimer();
 loadQuestion();
