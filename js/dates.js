@@ -157,11 +157,12 @@ function loadQuestion() {
 
     const progressPercent = Math.round((currentQuestion / (questions.length - 1)) * 100);
 
+    // Render question HTML with progress bar starting at 0%
     quizDiv.innerHTML = `
         <div class="question-counter">Question ${currentQuestion + 1} of ${questions.length}</div>
         <div class="progress-bar" style="background: #e0e0e0; border-radius: 5px; overflow: hidden; height: 12px; margin-bottom: 15px;">
             <div class="progress-fill" style="
-                width: ${progressPercent}%;
+                width: 0%;
                 height: 100%;
                 background: #007bff;
                 transition: width 0.5s ease;
@@ -178,11 +179,18 @@ function loadQuestion() {
         </div>
     `;
 
-    // Only fix height for quiz questions
+    // Animate progress bar to the correct width
+    setTimeout(() => {
+        const fill = quizDiv.querySelector('.progress-fill');
+        if (fill) fill.style.width = `${progressPercent}%`;
+    }, 50); // tiny delay ensures the transition works
+
+    // Lock quiz div height to prevent layout jumps
     quizDiv.style.minHeight = tallestHeight + "px";
     quizDiv.style.maxHeight = tallestHeight + "px";
     quizDiv.style.overflow = "hidden";
 
+    // Navigation button state
     prevBtn.disabled = currentQuestion === 0;
     nextBtn.textContent = currentQuestion === questions.length - 1 ? "Score Quiz" : "Next";
 
@@ -204,6 +212,7 @@ function loadQuestion() {
         });
     });
 }
+
 
 
 
