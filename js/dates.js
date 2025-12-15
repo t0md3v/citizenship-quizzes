@@ -286,6 +286,11 @@ function endQuiz() {
             Time Taken: ${minutes} min ${seconds} sec
         </div>
 
+            nextBtn.textContent = "Retake Quiz";
+    nextBtn.classList.add("retake");
+    nextBtn.onclick = resetQuiz;
+    prevBtn.style.display = "none";
+
                 <!-- Top buttons -->
         <div class="top-buttons" style="text-align:center; margin-bottom:20px;">
             <button onclick="window.location.href='index.html'">Home</button>
