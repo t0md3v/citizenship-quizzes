@@ -274,13 +274,21 @@ function endQuiz() {
     questions.forEach((q, i) => {
         const ans = userAnswers[i];
         const correct = q.correct;
-        reviewHTML += `<div class="review-item">
-            <strong>${i + 1}. ${q.question}</strong>
-            <div class="${ans === correct ? 'correct' : 'wrong'}">
-                Your answer: ${ans !== undefined ? q.choices[ans] : 'No answer selected'}
+
+        reviewHTML += `
+            <div class="review-item">
+                <strong>${i + 1}. ${q.question}</strong>
+                <div class="${ans === correct ? 'correct' : 'wrong'}">
+                    Your answer: ${ans !== undefined ? q.choices[ans] : 'No answer selected'}
+                </div>
+                ${
+                    ans !== correct
+                        ? `<div class="correct">Correct answer: ${q.choices[correct]}</div>`
+                        : ""
+                }
             </div>
-            ${ans !== correct ? `<div class="correct">Correct answer: ${q.choices[correct]}</div>` : ''}
-        </div>`;
+        `;
+
         if (ans !== correct) wrongAnswers++;
     });
 
@@ -288,6 +296,7 @@ function endQuiz() {
     const correctCount = total - wrongAnswers;
     const percentage = Math.round((correctCount / total) * 100);
     const passed = percentage >= 75;
+
     const totalElapsed = TOTAL_TIME - remainingTime;
     const minutes = Math.floor(totalElapsed / 60);
     const seconds = totalElapsed % 60;
@@ -297,14 +306,14 @@ function endQuiz() {
     nextBtn.style.display = "none";
 
     // Clear quiz content
-    quizDiv.innerHTML = '';
+    quizDiv.innerHTML = "";
 
-    // Create result container
-    const resultContainer = document.createElement('div');
-    resultContainer.className = 'quiz-end';
+    // Build results + review
+    const resultContainer = document.createElement("div");
+    resultContainer.className = "quiz-end";
     resultContainer.innerHTML = `
-        <div class="result ${passed ? 'pass' : 'fail'}">
-            Result: ${passed ? 'PASS' : 'FAIL'}<br>
+        <div class="result ${passed ? "pass" : "fail"}">
+            Result: ${passed ? "PASS" : "FAIL"}<br>
             Correct: ${correctCount} / ${total}<br>
             Wrong: ${wrongAnswers}<br>
             Percentage: ${percentage}%<br>
@@ -318,45 +327,48 @@ function endQuiz() {
             <button onclick="window.location.href='random.html'">20 Qs Random Quiz</button>
         </div>
 
-        <div class="review"><h3>Quiz Review</h3>${reviewHTML}</div>
-
-        <div class="retake-container">
-            <button id="retakeBtnSticky" class="retake-btn">Retake Quiz</button>
+        <div class="review">
+            <h3>Quiz Review</h3>
+            ${reviewHTML}
         </div>
     `;
+
     quizDiv.appendChild(resultContainer);
 
-    // Attach event listener to retake button after DOM is rebuilt
-    document.getElementById("retakeBtnSticky").onclick = resetQuiz;
+    // ✅ SHOW body-level sticky retake button
+    const stickyBtn = document.getElementById("retakeBtnSticky");
+    stickyBtn.style.display = "block";
+    stickyBtn.onclick = resetQuiz;
 
-    // Trigger confetti if passed
+    // 🎉 Confetti if passed
     if (passed && typeof confetti === "function") {
-        const duration = 4 * 1000; // 4 seconds for a more impressive display
+        const duration = 4000;
         const animationEnd = Date.now() + duration;
+
         const defaults = {
             spread: 120,
             ticks: 60,
             zIndex: 9999,
-            origin: { y: 1 } // start from bottom
+            origin: { y: 1 }
         };
 
-        const interval = setInterval(function() {
+        const interval = setInterval(() => {
             const timeLeft = animationEnd - Date.now();
-
             if (timeLeft <= 0) {
                 clearInterval(interval);
                 return;
             }
 
-            // Fireworks style bursts from center bottom
-            confetti(Object.assign({}, defaults, {
+            confetti({
+                ...defaults,
                 particleCount: 50 + Math.floor(Math.random() * 20),
-                scalar: 1.5 + Math.random() * 0.3, // bigger pieces
+                scalar: 1.5 + Math.random() * 0.3,
                 origin: { x: 0.5 + (Math.random() - 0.5) * 0.2, y: 1 }
-            }));
+            });
         }, 250);
     }
 }
+
 
 
 
@@ -365,6 +377,10 @@ function endQuiz() {
    RESET QUIZ
 ========================== */
 function resetQuiz() {
+    // ✅ HIDE sticky retake button
+    const stickyBtn = document.getElementById("retakeBtnSticky");
+    stickyBtn.style.display = "none";
+
     swipeEnabled = true;
     shuffleQuestionsAndChoices();
     currentQuestion = 0;
@@ -382,16 +398,17 @@ function resetQuiz() {
     quizDiv.style.overflow = "hidden";
 
     // Reset progress bar
-    progressFill.style.width = '0%';
+    progressFill.style.width = "0%";
 
-    // Remove old end-quiz content
-    const endContent = quizDiv.querySelector('.quiz-end');
+    // Remove end-quiz content if present
+    const endContent = quizDiv.querySelector(".quiz-end");
     if (endContent) endContent.remove();
 
-    // Restart timer and load first question
+    // Restart quiz
     startTimer();
     loadQuestion();
 }
+
 
 
 
