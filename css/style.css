@@ -164,6 +164,7 @@ button.retake:hover {
     margin-top: 30px;
     border-top: 2px solid #ccc;
     padding-top: 20px;
+    padding-bottom: 120px; /* space for sticky retake button */
 }
 
 .review h3 {
@@ -339,19 +340,28 @@ button.retake:hover {
 
      /* Fix top nav buttons: allow wrap, shrink buttons, reduce padding */
   .top-buttons {
-    flex-wrap: wrap !important;
-    justify-content: center !important;
-    gap: 8px !important;
+   position: sticky;
+    top: 0;
+    z-index: 100;
+
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(6px);
+    padding: 10px 16px;
+    border-radius: 8px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+
+    margin-bottom: 20px;
   }
 
   .top-buttons button {
-    flex-shrink: 1 !important;
-    padding: 6px 12px !important;
-    font-size: 14px !important;
-    min-width: 100px !important;
-    max-width: 45vw !important;
-    white-space: normal !important;
-    word-break: break-word !important;
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 14px;
+    white-space: normal;
   }
 
   /* Retake button container fix for mobile */
