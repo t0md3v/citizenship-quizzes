@@ -84,6 +84,29 @@ let timerInterval;
 let swipeEnabled = true;
 
 const quizDiv = document.getElementById("quiz");
+// Create progress bar once
+const progressBar = document.createElement('div');
+progressBar.className = 'progress-bar';
+progressBar.style.cssText = `
+    background: #e0e0e0;
+    border-radius: 5px;
+    overflow: hidden;
+    height: 12px;
+    margin-bottom: 15px;
+`;
+
+const progressFill = document.createElement('div');
+progressFill.className = 'progress-fill';
+progressFill.style.cssText = `
+    width: 0%;
+    height: 100%;
+    background: #007bff;
+    transition: width 0.5s ease;
+`;
+
+progressBar.appendChild(progressFill);
+quizDiv.prepend(progressBar); // add it to the top of quizDiv
+
 const nextBtn = document.getElementById("nextBtn");
 const prevBtn = document.getElementById("prevBtn");
 
@@ -155,19 +178,17 @@ function loadQuestion() {
     const q = questions[currentQuestion];
     const savedAnswer = userAnswers[currentQuestion];
 
+    // Update progress bar
     const progressPercent = Math.round((currentQuestion / (questions.length - 1)) * 100);
+    progressFill.style.width = progressPercent + '%';
 
-    // Render question HTML
-    quizDiv.innerHTML = `
+    // Build question and choices
+    quizDiv.querySelectorAll('.question-content')?.forEach(el => el.remove()); // remove previous question content
+
+    const questionContainer = document.createElement('div');
+    questionContainer.className = 'question-content';
+    questionContainer.innerHTML = `
         <div class="question-counter">Question ${currentQuestion + 1} of ${questions.length}</div>
-        <div class="progress-bar" style="background: #e0e0e0; border-radius: 5px; overflow: hidden; height: 12px; margin-bottom: 15px;">
-            <div class="progress-fill" style="
-                width: ${progressPercent}%;
-                height: 100%;
-                background: #007bff;
-                transition: width 0.5s ease;
-            "></div>
-        </div>
         <div class="question">${q.question}</div>
         <div class="choices">
             ${q.choices.map((choice, i) => `
@@ -178,18 +199,19 @@ function loadQuestion() {
             `).join("")}
         </div>
     `;
+    quizDiv.appendChild(questionContainer);
 
-    // Lock quiz div height
+    // Fix height for all questions
     quizDiv.style.minHeight = tallestHeight + "px";
     quizDiv.style.maxHeight = tallestHeight + "px";
     quizDiv.style.overflow = "hidden";
 
-    // Navigation button state
+    // Enable/disable navigation buttons
     prevBtn.disabled = currentQuestion === 0;
     nextBtn.textContent = currentQuestion === questions.length - 1 ? "Score Quiz" : "Next";
 
     // Auto-advance listener
-    document.querySelectorAll('input[name="choice"]').forEach(input => {
+    questionContainer.querySelectorAll('input[name="choice"]').forEach(input => {
         input.addEventListener('change', (e) => {
             saveAnswer();
             const label = e.target.closest('label');
@@ -206,6 +228,7 @@ function loadQuestion() {
         });
     });
 }
+
 
 
 
@@ -312,17 +335,23 @@ function resetQuiz() {
     currentQuestion = 0;
     userAnswers = [];
     remainingTime = TOTAL_TIME;
+
     prevBtn.style.display = "inline-block";
     nextBtn.style.display = "inline-block";
 
-    // recalc tallest height for the new question set
+    // Recalculate tallest height for the new question set
     const newTallestHeight = calculateTallestQuestionHeight();
     quizDiv.style.minHeight = newTallestHeight + "px";
     quizDiv.style.maxHeight = newTallestHeight + "px";
 
+    // Reset progress bar to 0
+    const progressFill = document.querySelector('.progress-fill');
+    if (progressFill) progressFill.style.width = '0%';
+
     startTimer();
     loadQuestion();
 }
+
 
 /* ==========================
    START QUIZ
