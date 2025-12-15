@@ -258,6 +258,7 @@ nextBtn.addEventListener("click", () => {
 /* ==========================
    END QUIZ
 ========================== */
+
 function endQuiz() {
     swipeEnabled = false;
     clearInterval(timerInterval);
@@ -295,8 +296,10 @@ function endQuiz() {
     prevBtn.style.display = "none";
     nextBtn.style.display = "none";
 
-    // Replace quiz content with results and review
-    quizDiv.querySelector('.question-content')?.remove();
+    // Clear quiz content
+    quizDiv.innerHTML = '';
+
+    // Create result container
     const resultContainer = document.createElement('div');
     resultContainer.className = 'quiz-end';
     resultContainer.innerHTML = `
@@ -317,13 +320,13 @@ function endQuiz() {
 
         <div class="review"><h3>Quiz Review</h3>${reviewHTML}</div>
 
-        <!-- Sticky Retake Quiz Button -->
         <div style="
             position: fixed;
             bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
-            z-index: 1000;
+            z-index: 9999;
+            text-align: center;
         ">
             <button id="retakeBtnSticky" style="
                 padding: 10px 20px;
@@ -340,7 +343,33 @@ function endQuiz() {
 
     // Attach event listener to retake button after DOM is rebuilt
     document.getElementById("retakeBtnSticky").onclick = resetQuiz;
+
+    // Trigger confetti if passed
+    if (passed && typeof confetti === "function") {
+        const duration = 2 * 1000; // 2 seconds
+        const animationEnd = Date.now() + duration;
+        const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 9999 };
+
+        function randomInRange(min, max) {
+            return Math.random() * (max - min) + min;
+        }
+
+        const interval = setInterval(function() {
+            const timeLeft = animationEnd - Date.now();
+
+            if (timeLeft <= 0) {
+                clearInterval(interval);
+                return;
+            }
+
+            confetti(Object.assign({}, defaults, {
+                particleCount: 5 + Math.floor(randomInRange(0, 10)),
+                origin: { x: Math.random(), y: Math.random() - 0.2 }
+            }));
+        }, 250);
+    }
 }
+
 
 
 /* ==========================

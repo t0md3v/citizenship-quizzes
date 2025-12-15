@@ -348,3 +348,25 @@ button.retake:hover {
     display: block;
     margin-bottom: 8px;
 }
+
+/* Sticky/floating Retake Quiz button */
+#retakeBtnSticky {
+    position: fixed !important;       /* fix position relative to viewport */
+    bottom: 20px;                     /* distance from bottom */
+    left: 50%;                         /* center horizontally */
+    transform: translateX(-50%);
+    z-index: 9999;                     /* above everything else */
+    padding: 12px 24px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    transition: background 0.3s ease;
+}
+
+#retakeBtnSticky:hover {
+    background-color: #1e7e34;
+}
