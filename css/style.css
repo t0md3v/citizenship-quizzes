@@ -164,7 +164,7 @@ button.retake:hover {
     margin-top: 30px;
     border-top: 2px solid #ccc;
     padding-top: 20px;
-    padding-bottom: 120px; /* space for sticky retake button */
+    padding-bottom: 40px; /* space for sticky retake button */
 }
 
 .review h3 {
