@@ -1,6 +1,25 @@
 /* ==========================
    QUESTIONS (NEW SET)
    ========================== */
+
+/* TOPICS left
+
+
+
+
+
+
+
+
+
+
+
+-1969 * Parliament passed the Official Languages Act
+-
+
+
+*/
+
 const originalQuestions = [
     { question: "Canada resisted U.S. invasion during which years?", choices: ["1939-1945", "1914-1918", "1812-1814", "1999"], correct: 2 },
     { question: "This document was signed in 1215.", choices: ["Confederation", "Magna Carta", "Constitutional Act", "Alberta Act"], correct: 1 },
@@ -21,7 +40,22 @@ const originalQuestions = [
     { question: "In which decade did the name Canada begin appearing on maps?", choices: ["1210s", "1600s", "1550s", "1750s"], correct: 2 },
     { question: "John Cabot reached Canada’s east coast in:", choices: ["1453", "1497", "1534", "1608"], correct: 1 },
     { question: "In which year did the British Parliament abolish slavery throughout the Empire?", choices: ["1933", "1929", "1829", "1833"], correct: 3 },
-    { question: "In which year did women gain the right to vote in Canada?", choices: ["1812", "1945", "1918", "1215"], correct: 2 }
+    { question: "In which year did women gain the right to vote in Canada?", choices: ["1812", "1945", "1918", "1215"], correct: 2 },
+    { question: "What happened in 1670?", choices: ["The Hudsons Bay Company was founded", "The Seven Years' War Ended", "Tim Horton's was founded", "Louis Riel was executed"], correct: 0 }, // Defaulted to first choice being correct answer
+    { question: "When was the Seven Years' War?", choices: ["1756-1763", "1911-1918", "1939-1946", "2017-2024"], correct: 0 },
+    { question: "TRUE or FALSE: The Battle of the Plains of Abraham happened during the Seven Years' War.", choices: ["True", "False"], correct: 0 },
+    { question: "What Happened in 1763?", choices: ["This year marked the end of New France and the beginning of British control over what is now Canada", "The Seven Years' War began", "The Hudson's Bay Company was founded", "Britain lost control of Canada to the French"], correct: 0 },
+    { question: "What's the significance of the year 1880?", choices: ["O Canada was first sung in Québec City", "The Royal Anthem was first sung in Montreal", "O Canada was first sung in Montreal", "The Royal Anthem was first sung in Québec City"], correct: 0 },
+    { question: "O Canada was proclaimed as the National Anthem in what year?", choices: ["1980", "1880", "1940", "1965"], correct: 0 },
+    { question: "What happened in 1849?", choices: ["Responsible government was achieved in Canada", "John Cabot arrived on the East Coast of Canada", "World War I began", "Canada first started appearing on maps"], correct: 0 },
+    { question: "Which 2 events occurred in 1857?", choices: ["The Indian Rebellion and Ottawa was chosen as the capital of Canada by Queen Victoria", "O Canada was first sung in Quebec City and Ottawa was chosen as the capital of Canada by Queen Victoria", "The Indian Rebellion and Confederation", "The Constitutional Act and the end of the Seven Years' War"], correct: 0 },
+    { question: "Which province joined Confederation in 1873?", choices: ["Prince Edward Island", "Nova Scotia", "Quebec", "Newfoundland and Labrador"], correct: 0 },
+    { question: "The North West Mounted Police was founded in which year?", choices: ["1873", "1867", "1791", "1999"], correct: 0 },
+    { question: "Which event(s) occurred in 1885?", choices: ["The North-West Rebellion during which Louis Riel met his demise", "The Indian Rebellion", "The Seven Years' War", "The Battle of the Plains of Abraham"], correct: 0 },
+    { question: "In which year did Manitoba become the first province to grant voting rights to women?", choices: ["1916", "1870", "1816", "2016"], correct: 0 },
+    { question: "What happened on June 6, 1944?", choices: ["D-Day: Juno Beach was stormed and captured", "T-Day: Tim Horton's was founded", "D-Day: Dominion Day", "World War I ended"], correct: 0 },
+    { question: "Which event occurred in 1967?", choices: ["This year marked the centennial of Confederation. Canada started its own honours system with the Order of Canada", "The founding provinces of Confederation (Ontario, Quebec, Nova Scotia and New Brunswick) joined forces to create the country of Canada", "The design of the current Canada flag was first adopted", "Alberta separated from Canada and became a sovereign state."], correct: 0 },
+    { question: "Which Act did Parliament pass in 1969?", choices: ["The Official Languages Act", "The Confederation Act", "The British North America Act", "The Constitutional Act"], correct: 0 }
 ];
 
 /* ==========================
