@@ -275,6 +275,11 @@ function endQuiz() {
     const minutes = Math.floor(totalElapsed / 60);
     const seconds = totalElapsed % 60;
 
+    nextBtn.textContent = "Retake Quiz";
+    nextBtn.classList.add("retake");
+    nextBtn.onclick = resetQuiz;
+    prevBtn.style.display = "none";
+
     quizDiv.innerHTML = `
 
 
@@ -286,10 +291,7 @@ function endQuiz() {
             Time Taken: ${minutes} min ${seconds} sec
         </div>
 
-            nextBtn.textContent = "Retake Quiz";
-    nextBtn.classList.add("retake");
-    nextBtn.onclick = resetQuiz;
-    prevBtn.style.display = "none";
+    
 
                 <!-- Top buttons -->
         <div class="top-buttons" style="text-align:center; margin-bottom:20px;">
