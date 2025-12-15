@@ -136,7 +136,7 @@ function loadQuestion() {
     const q = questions[currentQuestion];
     const savedAnswer = userAnswers[currentQuestion];
 
-    const progressPercent = Math.round(((currentQuestion) / questions.length) * 100);
+    const progressPercent = Math.round((currentQuestion / (questions.length - 1)) * 100);
 
     quizDiv.innerHTML = `
         <div class="question-counter">Question ${currentQuestion + 1} of ${questions.length}</div>
@@ -236,7 +236,7 @@ function endQuiz() {
     const total = questions.length;
     const correctCount = total - wrongAnswers;
     const percentage = Math.round((correctCount / total) * 100);
-    const passed = wrongAnswers < 6;
+    const passed = percentage >= 75;
     const totalElapsed = TOTAL_TIME - remainingTime;
     const minutes = Math.floor(totalElapsed / 60);
     const seconds = totalElapsed % 60;
