@@ -346,28 +346,32 @@ function endQuiz() {
 
     // Trigger confetti if passed
     if (passed && typeof confetti === "function") {
-        const duration = 2 * 1000; // 2 seconds
-        const animationEnd = Date.now() + duration;
-        const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 9999 };
+    const duration = 4 * 1000; // 4 seconds for a more impressive display
+    const animationEnd = Date.now() + duration;
+    const defaults = {
+        spread: 120,
+        ticks: 60,
+        zIndex: 9999,
+        origin: { y: 1 } // start from bottom
+    };
 
-        function randomInRange(min, max) {
-            return Math.random() * (max - min) + min;
+    const interval = setInterval(function() {
+        const timeLeft = animationEnd - Date.now();
+
+        if (timeLeft <= 0) {
+            clearInterval(interval);
+            return;
         }
 
-        const interval = setInterval(function() {
-            const timeLeft = animationEnd - Date.now();
+        // Fireworks style bursts from center bottom
+        confetti(Object.assign({}, defaults, {
+            particleCount: 25 + Math.floor(Math.random() * 20),
+            scalar: 1.2 + Math.random() * 0.3, // bigger pieces
+            origin: { x: 0.5 + (Math.random() - 0.5) * 0.2, y: 1 }
+        }));
+    }, 250);
+}
 
-            if (timeLeft <= 0) {
-                clearInterval(interval);
-                return;
-            }
-
-            confetti(Object.assign({}, defaults, {
-                particleCount: 5 + Math.floor(randomInRange(0, 10)),
-                origin: { x: Math.random(), y: Math.random() - 0.2 }
-            }));
-        }, 250);
-    }
 }
 
 
