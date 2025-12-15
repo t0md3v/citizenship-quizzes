@@ -827,6 +827,9 @@ nextBtn.onclick = () => {
 function endQuiz() {
     swipeEnabled = false;
     clearInterval(timerInterval);
+    // 🚫 Hide nav buttons on results page
+    prevBtn.style.display = "none";
+    nextBtn.style.display = "none";
 
     // 🔓 UNLOCK HEIGHT
     quizDiv.style.minHeight = "auto";
@@ -939,6 +942,7 @@ function resetQuiz() {
     quizDiv.style.overflow = "hidden";
 
     prevBtn.style.display = "inline-block";
+    nextBtn.style.display = "inline-block";
     nextBtn.classList.remove("retake");
 
     startTimer();
