@@ -101,7 +101,7 @@ progressFill.style.cssText = `
     width: 0%;
     height: 100%;
     background: #007bff;
-    transition: width 0.5s ease;
+    transition: width 0.3s ease;
 `;
 
 progressBar.appendChild(progressFill);
@@ -317,7 +317,14 @@ function endQuiz() {
 
         <div class="review"><h3>Quiz Review</h3>${reviewHTML}</div>
 
-        <div style="text-align:center; margin:20px 0;">
+        <!-- Sticky Retake Quiz Button -->
+        <div style="
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+        ">
             <button id="retakeBtnSticky" style="
                 padding: 10px 20px;
                 font-size: 16px;
@@ -334,6 +341,7 @@ function endQuiz() {
     // Attach event listener to retake button after DOM is rebuilt
     document.getElementById("retakeBtnSticky").onclick = resetQuiz;
 }
+
 
 /* ==========================
    RESET QUIZ
