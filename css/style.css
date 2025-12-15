@@ -364,27 +364,25 @@ button.retake:hover {
     white-space: normal;
   }
 
-  /* Retake button container fix for mobile */
-  .retake-container {
-    position: fixed !important;
-    bottom: 20px !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    z-index: 9999 !important;
-    width: 100% !important;
-    max-width: 400px !important;
-    padding: 0 10px !important;
-    box-sizing: border-box !important;
-    text-align: center !important;
-  }
 
   /* Retake button style on mobile */
   #retakeBtnSticky {
-    width: calc(100% - 20px);
-    max-width: 700px; /* same as quiz container */
-    margin: 0 auto;
-    padding: 12px 20px;
+    position: fixed;
+    bottom: env(safe-area-inset-bottom, 16px);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10000;
+
+    width: calc(100% - 32px);
+    max-width: 700px;
+
+    padding: 14px 20px;
     font-size: 16px;
+
+    background-color: #28a745;
+    color: #fff;
+    border-radius: 6px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.3);
   }
 }
 
@@ -399,23 +397,7 @@ button.retake:hover {
     margin-bottom: 8px;
 }
 
-/* Sticky/floating Retake Quiz button */
-#retakeBtnSticky {
-    position: fixed !important;       /* fix position relative to viewport */
-    bottom: 20px;                     /* distance from bottom */
-    left: 50%;                         /* center horizontally */
-    transform: translateX(-50%);
-    z-index: 9999;                     /* above everything else */
-    padding: 12px 24px;
-    font-size: 16px;
-    cursor: pointer;
-    background-color: #28a745;
-    color: #fff;
-    border: none;
-    border-radius: 6px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    transition: background 0.3s ease;
-}
+
 
 #retakeBtnSticky:hover {
     background-color: #1e7e34;
