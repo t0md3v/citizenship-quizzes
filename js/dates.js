@@ -365,8 +365,8 @@ function endQuiz() {
 
         // Fireworks style bursts from center bottom
         confetti(Object.assign({}, defaults, {
-            particleCount: 25 + Math.floor(Math.random() * 20),
-            scalar: 1.2 + Math.random() * 0.3, // bigger pieces
+            particleCount: 50 + Math.floor(Math.random() * 20),
+            scalar: 1.5 + Math.random() * 0.3, // bigger pieces
             origin: { x: 0.5 + (Math.random() - 0.5) * 0.2, y: 1 }
         }));
     }, 250);
