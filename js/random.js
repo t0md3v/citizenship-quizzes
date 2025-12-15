@@ -715,6 +715,32 @@ function updateTimerDisplay() {
 }
 
 /* ==========================
+   CALCULATE MAX QUESTION HEIGHT
+   ========================== */
+function calculateTallestQuestionHeight() {
+    const tempDiv = document.createElement('div');
+    tempDiv.style.position = 'absolute';
+    tempDiv.style.visibility = 'hidden';
+    tempDiv.style.width = quizDiv.offsetWidth + 'px';
+    tempDiv.style.padding = '20px';
+    document.body.appendChild(tempDiv);
+
+    let maxHeight = 0;
+    questions.forEach(q => {
+        tempDiv.innerHTML = `
+            <div class="question">${q.question}</div>
+            <div class="choices">
+                ${q.choices.map(c => `<label>${c}</label>`).join('')}
+            </div>
+        `;
+        if (tempDiv.offsetHeight > maxHeight) maxHeight = tempDiv.offsetHeight;
+    });
+
+    document.body.removeChild(tempDiv);
+    return maxHeight;
+}
+
+/* ==========================
    LOAD QUESTION
    ========================== */
 function loadQuestion() {
@@ -738,6 +764,11 @@ function loadQuestion() {
             `).join("")}
         </div>
     `;
+
+    // Fix height for all questions
+    quizDiv.style.minHeight = tallestHeight + "px";
+    quizDiv.style.maxHeight = tallestHeight + "px";
+    quizDiv.style.overflow = "hidden";
 
     prevBtn.disabled = currentQuestion === 0;
     nextBtn.textContent = currentQuestion === questions.length - 1 ? "Score Quiz" : "Next";
@@ -893,6 +924,13 @@ function resetQuiz() {
     remainingTime = TOTAL_TIME;
     nextBtn.classList.remove("retake");
     prevBtn.style.display = "inline-block";
+
+    // Recalculate tallest question height
+    const newTallestHeight = calculateTallestQuestionHeight();
+    quizDiv.style.minHeight = newTallestHeight + "px";
+    quizDiv.style.maxHeight = newTallestHeight + "px";
+    quizDiv.style.overflow = "hidden";
+
     startTimer();
     loadQuestion();
 }
@@ -901,5 +939,6 @@ function resetQuiz() {
    START QUIZ
    ========================== */
 shuffleQuestionsAndChoices(); // Randomize questions and choices
+const tallestHeight = calculateTallestQuestionHeight(); // initial question set
 startTimer();
 loadQuestion();
