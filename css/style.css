@@ -294,6 +294,29 @@ button.retake:hover {
     background: #0056b3;
 }
 
+/*
+RETAKE BUTTON STICKY
+*/
+
+#retakeBtnSticky {
+  position: fixed;
+  bottom: env(safe-area-inset-bottom, 16px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10000;
+
+  width: calc(100% - 32px);
+  max-width: 700px;
+
+  padding: 14px 20px;
+  font-size: 16px;
+
+  background-color: #28a745;
+  color: #fff;
+  border-radius: 6px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+}
+
 
 /* ==========================
     FORMAT FOR MOBILE
@@ -367,7 +390,7 @@ button.retake:hover {
 
   /* Retake button style on mobile */
   #retakeBtnSticky {
-    position: fixed;
+    /*position: fixed;
     bottom: env(safe-area-inset-bottom, 16px);
     left: 50%;
     transform: translateX(-50%);
@@ -376,13 +399,14 @@ button.retake:hover {
     width: calc(100% - 32px);
     max-width: 700px;
 
-    padding: 14px 20px;
+    padding: 14px 20px;     */
     font-size: 16px;
-
+    /*
     background-color: #28a745;
     color: #fff;
     border-radius: 6px;
     box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+    */
   }
 }
 
