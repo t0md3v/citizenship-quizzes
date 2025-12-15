@@ -275,10 +275,11 @@ function endQuiz() {
     const minutes = Math.floor(totalElapsed / 60);
     const seconds = totalElapsed % 60;
 
-    // Hide previous button
+    // Hide original nav buttons
     prevBtn.style.display = "none";
+    nextBtn.style.display = "none";
 
-    // Render results and Retake button inside quizDiv
+    // Render results and review with sticky Retake button
     quizDiv.innerHTML = `
         <div class="result ${passed ? 'pass' : 'fail'}">
             Result: ${passed ? 'PASS' : 'FAIL'}<br>
@@ -286,10 +287,6 @@ function endQuiz() {
             Wrong: ${wrongAnswers}<br>
             Percentage: ${percentage}%<br>
             Time Taken: ${minutes} min ${seconds} sec
-        </div>
-
-        <div style="text-align:center; margin:20px 0;">
-            <button id="retakeBtn">Retake Quiz</button>
         </div>
 
         <!-- Top buttons -->
@@ -301,11 +298,30 @@ function endQuiz() {
         </div>
 
         <div class="review"><h3>Quiz Review</h3>${reviewHTML}</div>
+
+        <!-- Sticky Retake Quiz button -->
+        <div style="
+            position: sticky;
+            bottom: 20px;
+            width: 100%;
+            text-align: center;
+            margin-top: 20px;
+            background: #fff;
+            padding: 10px 0;
+            z-index: 1000;
+        ">
+            <button id="retakeBtnSticky" style="
+                padding: 10px 20px;
+                font-size: 16px;
+                cursor: pointer;
+            ">Retake Quiz</button>
+        </div>
     `;
 
-    // Attach Retake button handler
-    document.getElementById("retakeBtn").onclick = resetQuiz;
+    // Attach Retake handler
+    document.getElementById("retakeBtnSticky").onclick = resetQuiz;
 }
+
 
 
 /* ==========================
