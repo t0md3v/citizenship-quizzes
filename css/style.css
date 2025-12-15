@@ -20,7 +20,7 @@ body {
     font-family: 'Source Sans Pro', sans-serif; /* Ensure body uses Source Sans Pro */
     margin: 0;
     padding: 0;
-    background: url('https://getwallpapers.com/wallpaper/full/f/1/6/701996-popular-canadian-wallpaper-1920x1201-for-tablet.jpg') no-repeat center center fixed;
+    background: url('https://getwallpapers.com/wallpaper/full/f/1/6/701996-popular-canadian-wallpaper-1920x1201-for-tablet.jpg') no-repeat center center;
     background-size: cover;
     color: #000;
     font-size: 125%;
