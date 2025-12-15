@@ -279,7 +279,7 @@ function endQuiz() {
     prevBtn.style.display = "none";
     nextBtn.style.display = "none";
 
-    // Render results and review with sticky Retake button
+    // Render results and review with compact sticky Retake button
     quizDiv.innerHTML = `
         <div class="result ${passed ? 'pass' : 'fail'}">
             Result: ${passed ? 'PASS' : 'FAIL'}<br>
@@ -299,16 +299,17 @@ function endQuiz() {
 
         <div class="review"><h3>Quiz Review</h3>${reviewHTML}</div>
 
-        <!-- Sticky Retake Quiz button -->
+        <!-- Compact sticky Retake Quiz button -->
         <div style="
             position: sticky;
             bottom: 20px;
-            
-            text-align: center;
-            margin-top: 20px;
+            display: inline-block;
+            margin: 20px auto;
+            padding: 5px 10px;
             background: #fff;
-            padding: 10px 0;
+            border-radius: 8px;
             z-index: 1000;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
         ">
             <button id="retakeBtnSticky" style="
                 padding: 10px 20px;
@@ -318,9 +319,16 @@ function endQuiz() {
         </div>
     `;
 
+    // Center the container horizontally using JS
+    const container = quizDiv.querySelector('div[style*="position: sticky"]');
+    container.style.position = "sticky";
+    container.style.left = "50%";
+    container.style.transform = "translateX(-50%)";
+
     // Attach Retake handler
     document.getElementById("retakeBtnSticky").onclick = resetQuiz;
 }
+
 
 
 
