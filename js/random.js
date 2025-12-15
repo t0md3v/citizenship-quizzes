@@ -876,10 +876,12 @@ function endQuiz() {
         </div>
     `;
 
+    /* DUPLICATE BUTTON, REMOVED
     nextBtn.textContent = "Retake Quiz";
     nextBtn.classList.add("retake");
     nextBtn.onclick = resetQuiz;
     prevBtn.style.display = "none";
+    */
 
     // ✅ SHOW body-level sticky retake button
     const stickyBtn = document.getElementById("retakeBtnSticky");
