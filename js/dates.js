@@ -275,14 +275,11 @@ function endQuiz() {
     const minutes = Math.floor(totalElapsed / 60);
     const seconds = totalElapsed % 60;
 
-    nextBtn.textContent = "Retake Quiz";
-    nextBtn.classList.add("retake");
-    nextBtn.onclick = resetQuiz;
+    // Hide previous button
     prevBtn.style.display = "none";
 
+    // Render results and Retake button inside quizDiv
     quizDiv.innerHTML = `
-
-
         <div class="result ${passed ? 'pass' : 'fail'}">
             Result: ${passed ? 'PASS' : 'FAIL'}<br>
             Correct: ${correctCount} / ${total}<br>
@@ -291,9 +288,11 @@ function endQuiz() {
             Time Taken: ${minutes} min ${seconds} sec
         </div>
 
-    
+        <div style="text-align:center; margin:20px 0;">
+            <button id="retakeBtn">Retake Quiz</button>
+        </div>
 
-                <!-- Top buttons -->
+        <!-- Top buttons -->
         <div class="top-buttons" style="text-align:center; margin-bottom:20px;">
             <button onclick="window.location.href='index.html'">Home</button>
             <button onclick="window.location.href='history.html'">History Quiz</button>
@@ -304,10 +303,8 @@ function endQuiz() {
         <div class="review"><h3>Quiz Review</h3>${reviewHTML}</div>
     `;
 
-    nextBtn.textContent = "Retake Quiz";
-    nextBtn.classList.add("retake");
-    nextBtn.onclick = resetQuiz;
-    prevBtn.style.display = "none";
+    // Attach Retake button handler
+    document.getElementById("retakeBtn").onclick = resetQuiz;
 }
 
 
