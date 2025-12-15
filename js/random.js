@@ -600,12 +600,10 @@ const originalQuestions = [
 { question: "Can you send someone else or skip your duty if you are called to serve on a jury?", choices: ["Yes, you can send your spouse to serve on your behalf", "No. Jury duty is a responsibility of citizenship that cannot be transferred or skipped", "Yes, you can skip jury duty if you inform the court in advance", "No, but you can hire someone to serve on the jury for you"], correct: 1 }
 ];
 
-
 /* ==========================
    SHUFFLE HELPERS
-   ========================== */
+========================== */
 
-// Shuffle the array of objects
 function shuffleArray(array) {
     return array
         .map(value => ({ value, sort: Math.random() }))
@@ -613,12 +611,9 @@ function shuffleArray(array) {
         .map(({ value }) => value);
 }
 
-// Shuffle both questions and their choices
 function shuffleQuestionsAndChoices() {
-    // First, shuffle the questions
-    let shuffledQuestions = shuffleArray(originalQuestions).slice(0, 20);  // Get 20 random questions
+    let shuffledQuestions = shuffleArray(originalQuestions).slice(0, 20);
 
-    // Shuffle choices within each question and adjust correct answer
     questions = shuffledQuestions.map(q => {
         const choicesObj = q.choices.map((c, i) => ({ text: c, isCorrect: i === q.correct }));
         const shuffledChoicesObj = shuffleArray(choicesObj);
@@ -631,76 +626,79 @@ function shuffleQuestionsAndChoices() {
         };
     });
 
-    // Shuffle the questions themselves (already done above but ensuring randomness)
     questions = shuffleArray(questions);
 }
 
 /* ==========================
-    HAPTIC FEEDBACK (FOR MOBILE)
-   ========================== */
-   
+   HAPTIC FEEDBACK
+========================== */
+
 function vibrate() {
-  if (navigator.vibrate) {
-    navigator.vibrate(20); // tiny buzz, not a chainsaw 😏
-  }
+    if (navigator.vibrate) navigator.vibrate(20);
 }
 
 /* ==========================
    QUIZ STATE
-   ========================== */
+========================== */
+
 let questions = [];
 let currentQuestion = 0;
 let userAnswers = [];
-let TOTAL_TIME = 45 * 60; // 45 minutes
+let TOTAL_TIME = 45 * 60;
 let remainingTime = TOTAL_TIME;
 let timerInterval;
 let swipeEnabled = true;
+let tallestHeight = 0;
 
 const quizDiv = document.getElementById("quiz");
 const nextBtn = document.getElementById("nextBtn");
 const prevBtn = document.getElementById("prevBtn");
 
+/* ==========================
+   TOUCH SWIPE
+========================== */
+
 let touchStartX = 0;
 let touchEndX = 0;
 
-document.addEventListener('touchstart', e => {
-  touchStartX = e.changedTouches[0].screenX;
+document.addEventListener("touchstart", e => {
+    touchStartX = e.changedTouches[0].screenX;
 });
 
-document.addEventListener('touchend', e => {
-  touchEndX = e.changedTouches[0].screenX;
-  handleSwipe();
+document.addEventListener("touchend", e => {
+    touchEndX = e.changedTouches[0].screenX;
+    handleSwipe();
 });
 
 function handleSwipe() {
-  if (!swipeEnabled) return; // nope 🚫
+    if (!swipeEnabled) return;
 
-  const swipeDistance = touchEndX - touchStartX;
-  if (Math.abs(swipeDistance) < 50) return;
+    const swipeDistance = touchEndX - touchStartX;
+    if (Math.abs(swipeDistance) < 50) return;
 
-  saveAnswer();
+    saveAnswer();
 
-  if (swipeDistance < 0 && currentQuestion < questions.length - 1) {
-    vibrate();
-    currentQuestion++;
-    loadQuestion();
-  } else if (swipeDistance > 0 && currentQuestion > 0) {
-    vibrate();
-    currentQuestion--;
-    loadQuestion();
-  }
+    if (swipeDistance < 0 && currentQuestion < questions.length - 1) {
+        vibrate();
+        currentQuestion++;
+        loadQuestion();
+    } else if (swipeDistance > 0 && currentQuestion > 0) {
+        vibrate();
+        currentQuestion--;
+        loadQuestion();
+    }
 }
 
 /* ==========================
    TIMER
-   ========================== */
+========================== */
+
 function startTimer() {
     updateTimerDisplay();
     timerInterval = setInterval(() => {
         remainingTime--;
         if (remainingTime < 0) {
             clearInterval(timerInterval);
-            alert("Time is up! The quiz will be submitted automatically.");
             endQuiz();
             return;
         }
@@ -709,50 +707,54 @@ function startTimer() {
 }
 
 function updateTimerDisplay() {
-    const minutes = String(Math.floor(remainingTime / 60)).padStart(2, '0');
-    const seconds = String(remainingTime % 60).padStart(2, '0');
-    document.getElementById("timer").textContent = `Time Remaining: ${minutes}:${seconds}`;
+    const minutes = String(Math.floor(remainingTime / 60)).padStart(2, "0");
+    const seconds = String(remainingTime % 60).padStart(2, "0");
+    document.getElementById("timer").textContent =
+        `Time Remaining: ${minutes}:${seconds}`;
 }
 
 /* ==========================
-   CALCULATE MAX QUESTION HEIGHT
-   ========================== */
+   HEIGHT CALCULATION
+========================== */
+
 function calculateTallestQuestionHeight() {
-    const tempDiv = document.createElement('div');
-    tempDiv.style.position = 'absolute';
-    tempDiv.style.visibility = 'hidden';
-    tempDiv.style.width = quizDiv.offsetWidth + 'px';
-    tempDiv.style.padding = '20px';
-    document.body.appendChild(tempDiv);
+    const temp = document.createElement("div");
+    temp.style.position = "absolute";
+    temp.style.visibility = "hidden";
+    temp.style.width = quizDiv.offsetWidth + "px";
+    temp.style.padding = "20px";
+
+    document.body.appendChild(temp);
 
     let maxHeight = 0;
+
     questions.forEach(q => {
-        tempDiv.innerHTML = `
+        temp.innerHTML = `
             <div class="question">${q.question}</div>
             <div class="choices">
-                ${q.choices.map(c => `<label>${c}</label>`).join('')}
+                ${q.choices.map(c => `<label>${c}</label>`).join("")}
             </div>
         `;
-        if (tempDiv.offsetHeight > maxHeight) maxHeight = tempDiv.offsetHeight;
+        maxHeight = Math.max(maxHeight, temp.offsetHeight);
     });
 
-    document.body.removeChild(tempDiv);
+    document.body.removeChild(temp);
     return maxHeight;
 }
 
 /* ==========================
    LOAD QUESTION
-   ========================== */
+========================== */
+
 function loadQuestion() {
     const q = questions[currentQuestion];
     const savedAnswer = userAnswers[currentQuestion];
-
-    const progressPercent = Math.round(((currentQuestion) / questions.length) * 100);
+    const progressPercent = Math.round((currentQuestion / questions.length) * 100);
 
     quizDiv.innerHTML = `
         <div class="question-counter">Question ${currentQuestion + 1} of ${questions.length}</div>
-        <div class="progress-bar" style="background: #e0e0e0; border-radius: 5px; overflow: hidden; height: 12px; margin-bottom: 15px;">
-            <div style="width: ${progressPercent}%; height: 100%; background: #007bff;"></div>
+        <div class="progress-bar" style="height:12px;margin-bottom:15px;">
+            <div style="width:${progressPercent}%;height:100%;background:#007bff;"></div>
         </div>
         <div class="question">${q.question}</div>
         <div class="choices">
@@ -765,40 +767,32 @@ function loadQuestion() {
         </div>
     `;
 
-    // Fix height for all questions
-    quizDiv.style.minHeight = tallestHeight + "px";
-    quizDiv.style.maxHeight = tallestHeight + "px";
-    quizDiv.style.overflow = "hidden";
-
     prevBtn.disabled = currentQuestion === 0;
     nextBtn.textContent = currentQuestion === questions.length - 1 ? "Score Quiz" : "Next";
 
-    // Auto-advance listener
     document.querySelectorAll('input[name="choice"]').forEach(input => {
-        input.addEventListener('change', (e) => {
+        input.addEventListener("change", e => {
             saveAnswer();
-
-            // highlight the selected label
-            const label = e.target.closest('label');
-            label.classList.add('selected');
+            const label = e.target.closest("label");
+            label.classList.add("selected");
 
             setTimeout(() => {
-                label.classList.remove('selected');
-
+                label.classList.remove("selected");
                 if (currentQuestion < questions.length - 1) {
                     currentQuestion++;
                     loadQuestion();
                 } else {
                     endQuiz();
                 }
-            }, 200); // 0.2 second delay
+            }, 200);
         });
     });
 }
 
 /* ==========================
    SAVE ANSWER
-   ========================== */
+========================== */
+
 function saveAnswer() {
     const selected = document.querySelector('input[name="choice"]:checked');
     userAnswers[currentQuestion] = selected ? parseInt(selected.value) : undefined;
@@ -806,16 +800,17 @@ function saveAnswer() {
 
 /* ==========================
    NAV BUTTONS
-   ========================== */
-prevBtn.addEventListener("click", () => {
+========================== */
+
+prevBtn.onclick = () => {
     if (currentQuestion > 0) {
         saveAnswer();
         currentQuestion--;
         loadQuestion();
     }
-});
+};
 
-nextBtn.addEventListener("click", () => {
+nextBtn.onclick = () => {
     saveAnswer();
     if (currentQuestion < questions.length - 1) {
         currentQuestion++;
@@ -823,113 +818,80 @@ nextBtn.addEventListener("click", () => {
     } else {
         endQuiz();
     }
-});
+};
 
 /* ==========================
    END QUIZ
 ========================== */
+
 function endQuiz() {
     swipeEnabled = false;
     clearInterval(timerInterval);
+
+    // 🔓 UNLOCK HEIGHT
+    quizDiv.style.minHeight = "auto";
+    quizDiv.style.maxHeight = "none";
+    quizDiv.style.overflow = "visible";
 
     let wrongAnswers = 0;
     let reviewHTML = "";
 
     questions.forEach((q, i) => {
         const ans = userAnswers[i];
-        const correct = q.correct;
-        reviewHTML += `<div class="review-item">
-            <strong>${i + 1}. ${q.question}</strong>
-            <div class="${ans === correct ? 'correct' : 'wrong'}">
-                Your answer: ${ans !== undefined ? q.choices[ans] : 'No answer selected'}
+        reviewHTML += `
+            <div class="review-item">
+                <strong>${i + 1}. ${q.question}</strong>
+                <div class="${ans === q.correct ? "correct" : "wrong"}">
+                    Your answer: ${ans !== undefined ? q.choices[ans] : "No answer"}
+                </div>
+                ${ans !== q.correct ? `<div class="correct">Correct: ${q.choices[q.correct]}</div>` : ""}
             </div>
-            ${ans !== correct ? `<div class="correct">Correct answer: ${q.choices[correct]}</div>` : ''}
-        </div>`;
-        if (ans !== correct) wrongAnswers++;
+        `;
+        if (ans !== q.correct) wrongAnswers++;
     });
 
     const total = questions.length;
     const correctCount = total - wrongAnswers;
     const percentage = Math.round((correctCount / total) * 100);
-    const passed = wrongAnswers < 6;
-    const totalElapsed = TOTAL_TIME - remainingTime;
-    const minutes = Math.floor(totalElapsed / 60);
-    const seconds = totalElapsed % 60;
 
     quizDiv.innerHTML = `
-
-
-        <div class="result ${passed ? 'pass' : 'fail'}">
-            Result: ${passed ? 'PASS' : 'FAIL'}<br>
+        <div class="result ${wrongAnswers < 6 ? "pass" : "fail"}">
+            Result: ${wrongAnswers < 6 ? "PASS" : "FAIL"}<br>
             Correct: ${correctCount} / ${total}<br>
             Wrong: ${wrongAnswers}<br>
-            Percentage: ${percentage}%<br>
-            Time Taken: ${minutes} min ${seconds} sec
+            Percentage: ${percentage}%
         </div>
 
-        <!-- Top buttons -->
-        <div class="top-buttons" style="text-align:center; margin-bottom:20px;">
-            <button onclick="window.location.href='index.html'">Home</button>
-            <button onclick="window.location.href='history.html'">History Quiz</button>
-            <button onclick="window.location.href='dates.html'">Dates Quiz</button>
-            <button onclick="window.location.href='general.html'">General Quiz</button>
+        <div class="review">
+            <h3>Quiz Review</h3>
+            ${reviewHTML}
         </div>
-
-        <div class="review"><h3>Quiz Review</h3>${reviewHTML}</div>
     `;
 
     nextBtn.textContent = "Retake Quiz";
     nextBtn.classList.add("retake");
     nextBtn.onclick = resetQuiz;
     prevBtn.style.display = "none";
-
-     // 🎉 Confetti if passed
-    if (passed && typeof confetti === "function") {
-        const duration = 4000;
-        const animationEnd = Date.now() + duration;
-
-        const defaults = {
-            spread: 120,
-            ticks: 60,
-            zIndex: 9999,
-            origin: { y: 1 }
-        };
-
-        const interval = setInterval(() => {
-            const timeLeft = animationEnd - Date.now();
-            if (timeLeft <= 0) {
-                clearInterval(interval);
-                return;
-            }
-
-            confetti({
-                ...defaults,
-                particleCount: 50 + Math.floor(Math.random() * 20),
-                scalar: 1.5 + Math.random() * 0.3,
-                origin: { x: 0.5 + (Math.random() - 0.5) * 0.2, y: 1 }
-            });
-        }, 250);
-    }
-
 }
 
 /* ==========================
    RESET QUIZ
-   ========================== */
+========================== */
+
 function resetQuiz() {
     swipeEnabled = true;
     shuffleQuestionsAndChoices();
     currentQuestion = 0;
     userAnswers = [];
     remainingTime = TOTAL_TIME;
-    nextBtn.classList.remove("retake");
-    prevBtn.style.display = "inline-block";
 
-    // Recalculate tallest question height
-    const newTallestHeight = calculateTallestQuestionHeight();
-    quizDiv.style.minHeight = newTallestHeight + "px";
-    quizDiv.style.maxHeight = newTallestHeight + "px";
+    tallestHeight = calculateTallestQuestionHeight();
+    quizDiv.style.minHeight = tallestHeight + "px";
+    quizDiv.style.maxHeight = tallestHeight + "px";
     quizDiv.style.overflow = "hidden";
+
+    prevBtn.style.display = "inline-block";
+    nextBtn.classList.remove("retake");
 
     startTimer();
     loadQuestion();
@@ -937,8 +899,13 @@ function resetQuiz() {
 
 /* ==========================
    START QUIZ
-   ========================== */
-shuffleQuestionsAndChoices(); // Randomize questions and choices
-const tallestHeight = calculateTallestQuestionHeight(); // initial question set
+========================== */
+
+shuffleQuestionsAndChoices();
+tallestHeight = calculateTallestQuestionHeight();
+quizDiv.style.minHeight = tallestHeight + "px";
+quizDiv.style.maxHeight = tallestHeight + "px";
+quizDiv.style.overflow = "hidden";
+
 startTimer();
 loadQuestion();
