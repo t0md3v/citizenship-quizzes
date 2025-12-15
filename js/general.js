@@ -252,6 +252,35 @@ function endQuiz() {
 
     // Reset the next button to allow quiz retake when clicked
     nextBtn.onclick = resetQuiz;
+
+      // 🎉 Confetti if passed
+    if (passed && typeof confetti === "function") {
+        const duration = 4000;
+        const animationEnd = Date.now() + duration;
+
+        const defaults = {
+            spread: 120,
+            ticks: 60,
+            zIndex: 9999,
+            origin: { y: 1 }
+        };
+
+        const interval = setInterval(() => {
+            const timeLeft = animationEnd - Date.now();
+            if (timeLeft <= 0) {
+                clearInterval(interval);
+                return;
+            }
+
+            confetti({
+                ...defaults,
+                particleCount: 50 + Math.floor(Math.random() * 20),
+                scalar: 1.5 + Math.random() * 0.3,
+                origin: { x: 0.5 + (Math.random() - 0.5) * 0.2, y: 1 }
+            });
+        }, 250);
+    }
+
 }
 
 /* ==========================
