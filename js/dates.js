@@ -262,7 +262,7 @@ function endQuiz() {
     swipeEnabled = false;
     clearInterval(timerInterval);
 
-    // Remove height restriction so review can expand
+    // Remove height restriction for review
     quizDiv.style.minHeight = "auto";
     quizDiv.style.maxHeight = "none";
     quizDiv.style.overflow = "visible";
@@ -291,10 +291,15 @@ function endQuiz() {
     const minutes = Math.floor(totalElapsed / 60);
     const seconds = totalElapsed % 60;
 
+    // Hide nav buttons
     prevBtn.style.display = "none";
     nextBtn.style.display = "none";
 
-    quizDiv.innerHTML = `
+    // Replace quiz content with results and review
+    quizDiv.querySelector('.question-content')?.remove();
+    const resultContainer = document.createElement('div');
+    resultContainer.className = 'quiz-end';
+    resultContainer.innerHTML = `
         <div class="result ${passed ? 'pass' : 'fail'}">
             Result: ${passed ? 'PASS' : 'FAIL'}<br>
             Correct: ${correctCount} / ${total}<br>
@@ -312,7 +317,7 @@ function endQuiz() {
 
         <div class="review"><h3>Quiz Review</h3>${reviewHTML}</div>
 
-        <div style="position: sticky; bottom: 20px; display: inline-block; margin: 20px auto; padding: 0; z-index: 1000; left: 50%; transform: translateX(-50%);">
+        <div style="text-align:center; margin:20px 0;">
             <button id="retakeBtnSticky" style="
                 padding: 10px 20px;
                 font-size: 16px;
@@ -324,11 +329,15 @@ function endQuiz() {
             ">Retake Quiz</button>
         </div>
     `;
+    quizDiv.appendChild(resultContainer);
 
+    // Attach event listener to retake button after DOM is rebuilt
     document.getElementById("retakeBtnSticky").onclick = resetQuiz;
 }
 
-
+/* ==========================
+   RESET QUIZ
+========================== */
 function resetQuiz() {
     swipeEnabled = true;
     shuffleQuestionsAndChoices();
@@ -336,21 +345,28 @@ function resetQuiz() {
     userAnswers = [];
     remainingTime = TOTAL_TIME;
 
+    // Show nav buttons again
     prevBtn.style.display = "inline-block";
     nextBtn.style.display = "inline-block";
 
-    // Recalculate tallest height for the new question set
+    // Recalculate tallest question height
     const newTallestHeight = calculateTallestQuestionHeight();
     quizDiv.style.minHeight = newTallestHeight + "px";
     quizDiv.style.maxHeight = newTallestHeight + "px";
+    quizDiv.style.overflow = "hidden";
 
-    // Reset progress bar to 0
-    const progressFill = document.querySelector('.progress-fill');
-    if (progressFill) progressFill.style.width = '0%';
+    // Reset progress bar
+    progressFill.style.width = '0%';
 
+    // Remove old end-quiz content
+    const endContent = quizDiv.querySelector('.quiz-end');
+    if (endContent) endContent.remove();
+
+    // Restart timer and load first question
     startTimer();
     loadQuestion();
 }
+
 
 
 /* ==========================
