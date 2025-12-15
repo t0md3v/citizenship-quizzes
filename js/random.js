@@ -881,6 +881,11 @@ function endQuiz() {
     nextBtn.onclick = resetQuiz;
     prevBtn.style.display = "none";
 
+    // ✅ SHOW body-level sticky retake button
+    const stickyBtn = document.getElementById("retakeBtnSticky");
+    stickyBtn.style.display = "block";
+    stickyBtn.onclick = resetQuiz;
+
     // 🎉 Confetti if passed
     if (passed && typeof confetti === "function") {
         const duration = 4000;
@@ -916,6 +921,10 @@ function endQuiz() {
 ========================== */
 
 function resetQuiz() {
+      // ✅ HIDE sticky retake button
+    const stickyBtn = document.getElementById("retakeBtnSticky");
+    stickyBtn.style.display = "none";
+
     swipeEnabled = true;
     shuffleQuestionsAndChoices();
     currentQuestion = 0;
