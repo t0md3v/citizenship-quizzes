@@ -102,7 +102,7 @@ h1 {
 /* BUTTONS
 /*******************************************/
 button {
-    margin-top: 20px;
+    margin-top: 0px;
     padding: 10px 20px;
     font-size: 16px;
     cursor: pointer;
