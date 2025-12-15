@@ -303,7 +303,7 @@ function endQuiz() {
         <div style="
             position: sticky;
             bottom: 20px;
-            width: 100%;
+            
             text-align: center;
             margin-top: 20px;
             background: #fff;
