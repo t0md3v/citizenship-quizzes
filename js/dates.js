@@ -320,23 +320,8 @@ function endQuiz() {
 
         <div class="review"><h3>Quiz Review</h3>${reviewHTML}</div>
 
-        <div style="
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 9999;
-            text-align: center;
-        ">
-            <button id="retakeBtnSticky" style="
-                padding: 10px 20px;
-                font-size: 16px;
-                cursor: pointer;
-                background-color: #28a745;
-                color: #fff;
-                border: none;
-                border-radius: 5px;
-            ">Retake Quiz</button>
+        <div class="retake-container">
+            <button id="retakeBtnSticky" class="retake-btn">Retake Quiz</button>
         </div>
     `;
     quizDiv.appendChild(resultContainer);
@@ -346,33 +331,33 @@ function endQuiz() {
 
     // Trigger confetti if passed
     if (passed && typeof confetti === "function") {
-    const duration = 4 * 1000; // 4 seconds for a more impressive display
-    const animationEnd = Date.now() + duration;
-    const defaults = {
-        spread: 120,
-        ticks: 60,
-        zIndex: 9999,
-        origin: { y: 1 } // start from bottom
-    };
+        const duration = 4 * 1000; // 4 seconds for a more impressive display
+        const animationEnd = Date.now() + duration;
+        const defaults = {
+            spread: 120,
+            ticks: 60,
+            zIndex: 9999,
+            origin: { y: 1 } // start from bottom
+        };
 
-    const interval = setInterval(function() {
-        const timeLeft = animationEnd - Date.now();
+        const interval = setInterval(function() {
+            const timeLeft = animationEnd - Date.now();
 
-        if (timeLeft <= 0) {
-            clearInterval(interval);
-            return;
-        }
+            if (timeLeft <= 0) {
+                clearInterval(interval);
+                return;
+            }
 
-        // Fireworks style bursts from center bottom
-        confetti(Object.assign({}, defaults, {
-            particleCount: 50 + Math.floor(Math.random() * 20),
-            scalar: 1.5 + Math.random() * 0.3, // bigger pieces
-            origin: { x: 0.5 + (Math.random() - 0.5) * 0.2, y: 1 }
-        }));
-    }, 250);
+            // Fireworks style bursts from center bottom
+            confetti(Object.assign({}, defaults, {
+                particleCount: 50 + Math.floor(Math.random() * 20),
+                scalar: 1.5 + Math.random() * 0.3, // bigger pieces
+                origin: { x: 0.5 + (Math.random() - 0.5) * 0.2, y: 1 }
+            }));
+        }, 250);
+    }
 }
 
-}
 
 
 

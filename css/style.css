@@ -336,6 +336,48 @@ button.retake:hover {
         text-align: left;
         font-size: 0.9em;
     }
+
+     /* Fix top nav buttons: allow wrap, shrink buttons, reduce padding */
+  .top-buttons {
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    gap: 8px !important;
+  }
+
+  .top-buttons button {
+    flex-shrink: 1 !important;
+    padding: 6px 12px !important;
+    font-size: 14px !important;
+    min-width: 100px !important;
+    max-width: 45vw !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+  }
+
+  /* Retake button container fix for mobile */
+  .retake-container {
+    position: fixed !important;
+    bottom: 20px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    z-index: 9999 !important;
+    width: 100% !important;
+    max-width: 400px !important;
+    padding: 0 10px !important;
+    box-sizing: border-box !important;
+    text-align: center !important;
+  }
+
+  /* Retake button style on mobile */
+  #retakeBtnSticky {
+    max-width: 90vw !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    box-sizing: border-box !important;
+    padding: 12px 24px !important;
+    font-size: 16px !important;
+  }
 }
 
 /* Preventing re-sizing during quiz */
