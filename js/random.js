@@ -856,6 +856,7 @@ function endQuiz() {
     const total = questions.length;
     const correctCount = total - wrongAnswers;
     const percentage = Math.round((correctCount / total) * 100);
+   const passed = wrongAnswers < 6; //define for confetti function
 
     quizDiv.innerHTML = `
         <div class="result ${wrongAnswers < 6 ? "pass" : "fail"}">
