@@ -294,31 +294,7 @@ button.retake:hover {
     background: #0056b3;
 }
 
-/*
-RETAKE BUTTON STICKY
-*/
 
-#retakeBtnSticky {
-  position: fixed;
-  bottom: env(safe-area-inset-bottom, 16px);
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 10000;
-
-  /*    width: calc(100% - 32px);   */
-  width: auto;
-  display: inline-block;
-  padding: 14px 22px;
-  max-width: 700px;
-
-  padding: 14px 20px;
-  font-size: 16px;
-
-  background-color: #28a745;
-  color: #fff;
-  border-radius: 6px;
-  box-shadow: 0 6px 15px rgba(0,0,0,0.3);
-}
 
 
 /* ==========================
@@ -402,8 +378,52 @@ RETAKE BUTTON STICKY
     margin-bottom: 8px;
 }
 
+/* ==========================
+   STICKY ACTION BUTTONS
+========================== */
 
+#stickyActions {
+  position: fixed;
+  bottom: env(safe-area-inset-bottom, 16px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10000;
 
-#retakeBtnSticky:hover {
-    background-color: #1e7e34;
+  display: none;              /* hidden by default */
+  gap: 12px;
+  padding: 10px 14px;
+
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+
+  border-radius: 10px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+}
+
+#stickyActions button {
+  padding: 14px 20px;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  border: none;
+  color: #fff;
+  background-color: #28a745;
+  transition: background 0.3s ease;
+}
+
+#stickyActions button:hover {
+  background-color: #1e7e34;
+}
+
+/* 📱 Mobile tweak */
+@media (max-width: 600px) {
+  #stickyActions {
+    width: calc(100% - 32px);
+    justify-content: center;
+  }
+
+  #stickyActions button {
+    flex: 1;
+  }
 }
