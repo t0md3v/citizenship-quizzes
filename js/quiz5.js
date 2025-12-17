@@ -201,7 +201,7 @@ function calculateTallestQuestionHeight() {
 ========================== */
 
 function loadQuestion() {
-    
+
     // 👻 Jump scare on question 11 (index 10)
     if (currentQuestion === 10 && !window.jumpscareDone) {
         window.jumpscareDone = true;
@@ -233,6 +233,7 @@ function loadQuestion() {
     document.querySelectorAll('input[name="choice"]').forEach(input => {
         input.addEventListener("change", e => {
             saveAnswer();
+            vibrate(); // vibrate on tap
             const label = e.target.closest("label");
             label.classList.add("selected");
 
