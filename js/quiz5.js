@@ -2,7 +2,7 @@
    QUESTIONS (NEW SET)
    ========================== */
 const originalQuestions = [
-{ question: "How is a cabinet minister chosen?", choices: ["By the Prime Minister", "By the King", "By the voters", "By the senators"], correct: 0 },
+{ question: "How is a Cabinet Minister chosen?", choices: ["By the Prime Minister", "By the King", "By the voters", "By the Senators"], correct: 0 },
 { question: "Who are the Acadians?", choices: ["English-speaking refugees who settled in Ontario", "The descendants of French colonists who began settling in what are now the Maritime Provinces", "French-speaking Catholics who live in Ontario", "Aboriginal people of the Arctic"], correct: 1 },
 { question: "How is the Prime Minister chosen?", choices: ["The MPs vote on the Prime Minister", "The Governor General, with the Senators, appoints the Prime Minister", "The King appoints the Prime Minister", "The leader of the party with the most elected Members of Parliament"], correct: 3 },
 { question: "What does MNA stand for?", choices: ["Member of the National Aid", "Member of the National Association", "Member of the National Airline", "Member of the National Assembly"], correct: 3 },
