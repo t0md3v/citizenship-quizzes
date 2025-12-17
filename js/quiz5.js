@@ -62,6 +62,27 @@ function vibrate() {
 }
 
 /* ==========================
+   CELEBRATIONS
+========================== */
+
+function showPerfectCelebration() {
+    const overlay = document.getElementById("goldOverlay");
+    const text = document.getElementById("perfectText");
+
+    if (!overlay || !text) return;
+
+    overlay.style.opacity = "1";
+    text.style.opacity = "1";
+    text.style.transform = "translate(-50%, -50%) scale(1)";
+
+    setTimeout(() => {
+        overlay.style.opacity = "0";
+        text.style.opacity = "0";
+        text.style.transform = "translate(-50%, -50%) scale(0.9)";
+    }, 6000);
+}
+
+/* ==========================
    JUMPSCARE
 ========================== */
 
@@ -405,6 +426,41 @@ function endQuiz() {
             });
         }, 250);
     }
+        // 🎆 Fireworks for high score
+if (passed && percentage >= 90 && typeof confetti === "function") {
+    const duration = 5000;
+    const end = Date.now() + duration;
+
+    const fireworkInterval = setInterval(() => {
+        if (Date.now() > end) {
+            clearInterval(fireworkInterval);
+            return;
+        }
+
+        confetti({
+            particleCount: 40,
+            spread: 70,
+            startVelocity: 45,
+            ticks: 90,
+            origin: {
+                x: Math.random(),
+                y: 0
+            }
+        });
+    }, 300);
+}
+
+if (percentage === 100) {
+    const sound = document.getElementById("perfectSound");
+    if (sound) {
+        sound.currentTime = 0;
+        sound.play().catch(() => {});
+    }
+}
+
+if (percentage === 100) {
+    showPerfectCelebration();
+}
 }
 
 

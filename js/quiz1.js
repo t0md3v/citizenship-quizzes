@@ -245,7 +245,6 @@ function vibrate() {
    CELEBRATIONS
 ========================== */
 
-
 function showPerfectCelebration() {
     const overlay = document.getElementById("goldOverlay");
     const text = document.getElementById("perfectText");
@@ -260,7 +259,7 @@ function showPerfectCelebration() {
         overlay.style.opacity = "0";
         text.style.opacity = "0";
         text.style.transform = "translate(-50%, -50%) scale(0.9)";
-    }, 3000);
+    }, 6000);
 }
 
 
@@ -568,7 +567,7 @@ function endQuiz() {
 
     // 🎆 Fireworks for high score
 if (passed && percentage >= 90 && typeof confetti === "function") {
-    const duration = 5000;
+    const duration = 6000;
     const end = Date.now() + duration;
 
     const fireworkInterval = setInterval(() => {
@@ -601,6 +600,7 @@ if (percentage === 100) {
 if (percentage === 100) {
     showPerfectCelebration();
 }
+
 
 
 }
