@@ -79,7 +79,7 @@ function triggerJumpScare() {
         sound.play().catch(() => {});
     }
 
-    vibrate();
+    vibrate([200, 100, 200, 100, 300]);
 
     setTimeout(() => {
         img.style.animation = "fallAway 1.5s ease-in forwards";
