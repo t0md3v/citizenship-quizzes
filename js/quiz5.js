@@ -81,7 +81,7 @@ function triggerJumpScare() {
 
     // 🔥 BIG vibration
     if (navigator.vibrate) {
-        navigator.vibrate([200, 100, 200, 100, 300]);
+        navigator.vibrate([400, 200, 400, 200, 600]);
     }
 
     setTimeout(() => {
