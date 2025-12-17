@@ -568,7 +568,7 @@ function endQuiz() {
 
     // 🎆 Fireworks for high score
 if (passed && percentage >= 90 && typeof confetti === "function") {
-    const duration = 3000;
+    const duration = 5000;
     const end = Date.now() + duration;
 
     const fireworkInterval = setInterval(() => {
@@ -581,7 +581,7 @@ if (passed && percentage >= 90 && typeof confetti === "function") {
             particleCount: 40,
             spread: 70,
             startVelocity: 45,
-            ticks: 80,
+            ticks: 90,
             origin: {
                 x: Math.random(),
                 y: 0
