@@ -461,3 +461,34 @@ button.retake:hover {
     opacity: 0;
   }
 }
+
+#goldOverlay {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at center,
+    rgba(255,215,100,0.35),
+    rgba(255,215,100,0.05),
+    transparent 70%);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 4000;
+  transition: opacity 0.6s ease;
+}
+
+#perfectText {
+  position: fixed;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.8);
+  font-size: 4rem;
+  font-weight: 900;
+  letter-spacing: 0.15em;
+  color: #ffd700;
+  text-shadow:
+    0 0 10px rgba(255,215,0,0.8),
+    0 0 30px rgba(255,215,0,0.6);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 4500;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
