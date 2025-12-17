@@ -400,6 +400,7 @@ function loadQuestion() {
     document.querySelectorAll('input[name="choice"]').forEach(input => {
         input.addEventListener("change", e => {
             saveAnswer();
+            vibrate(); // vibrate on tap
             const label = e.target.closest("label");
             label.classList.add("selected");
 
