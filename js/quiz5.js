@@ -79,7 +79,10 @@ function triggerJumpScare() {
         sound.play().catch(() => {});
     }
 
-    vibrate([200, 100, 200, 100, 300]);
+    // 🔥 BIG vibration
+    if (navigator.vibrate) {
+        navigator.vibrate([200, 100, 200, 100, 300]);
+    }
 
     setTimeout(() => {
         img.style.animation = "fallAway 1.5s ease-in forwards";
