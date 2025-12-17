@@ -62,6 +62,36 @@ function vibrate() {
 }
 
 /* ==========================
+   JUMPSCARE
+========================== */
+
+function triggerJumpScare() {
+    const scare = document.getElementById("jumpScare");
+    const img = scare.querySelector("img");
+    const sound = document.getElementById("jumpScareSound");
+    if (!scare || !img) return;
+
+    scare.style.display = "block";
+    img.style.animation = "shake 0.6s infinite";
+
+    if (sound) {
+        sound.currentTime = 0;
+        sound.play().catch(() => {});
+    }
+
+    vibrate();
+
+    setTimeout(() => {
+        img.style.animation = "fallAway 1.5s ease-in forwards";
+    }, 5000);
+
+    setTimeout(() => {
+        scare.style.display = "none";
+        img.style.animation = "";
+    }, 6500);
+}
+
+/* ==========================
    QUIZ STATE
 ========================== */
 
@@ -171,6 +201,12 @@ function calculateTallestQuestionHeight() {
 ========================== */
 
 function loadQuestion() {
+    
+    // 👻 Jump scare on question 11 (index 10)
+    if (currentQuestion === 10 && !window.jumpscareDone) {
+        window.jumpscareDone = true;
+        triggerJumpScare();
+    }
     const q = questions[currentQuestion];
     const savedAnswer = userAnswers[currentQuestion];
     const progressPercent = Math.round((currentQuestion / questions.length) * 100);
