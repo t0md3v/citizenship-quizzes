@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+    	<meta charset="utf-8">
+    	<meta name="description" content="This is where your description goes">
+    	<meta name="keywords" content="one, two, three">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- <meta http-equiv="refresh" content="15"> -->
+
+		<title>Cuestionario de Práctica para la Ciudadanía Canadiense</title>
+
+		<!-- external CSS link -->
+		<link rel="stylesheet" href="css/normalize.css">
+		<link rel="stylesheet" href="css/style.css">
+		<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
+		<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+	</head>
+	<body>
+
+
+<div class="quiz-container">
+    <h1>Cuestionario de Práctica para la Ciudadanía Canadiense</h1>
+
+    <div class="timer" id="timer">Tiempo: 00:00</div>
+
+    <div id="quiz"></div>
+
+    <div class="nav-buttons">
+        <button id="prevBtn" disabled>Anterior</button>
+        <button id="nextBtn">Siguiente</button>
+    </div>
+</div>
+
+<!-- PERFECT SCORE CELEBRATION -->
+<div id="goldOverlay"></div>
+<div id="perfectText">PERFECTO!</div>
+<audio id="perfectSound" src="sounds/perfect.mp3" preload="auto"></audio>
+		<script type="text/javascript" src="js/quiz_es.js"></script>
+	</body>
+</html>
