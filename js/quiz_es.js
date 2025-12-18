@@ -199,7 +199,7 @@ function updateTimerDisplay() {
     const minutes = String(Math.floor(remainingTime / 60)).padStart(2, "0");
     const seconds = String(remainingTime % 60).padStart(2, "0");
     document.getElementById("timer").textContent =
-        `Time Remaining: ${minutes}:${seconds}`;
+        `Tiempo restante: ${minutes}:${seconds}`;
 }
 
 /* ==========================
@@ -241,7 +241,7 @@ function loadQuestion() {
     const progressPercent = Math.round((currentQuestion / questions.length) * 100);
 
     quizDiv.innerHTML = `
-        <div class="question-counter">Question ${currentQuestion + 1} of ${questions.length}</div>
+        <div class="question-counter">Pregunta ${currentQuestion + 1} de ${questions.length}</div>
         <div class="progress-bar" style="height:12px;margin-bottom:15px;">
             <div style="width:${progressPercent}%;height:100%;background:#007bff;"></div>
         </div>
@@ -257,7 +257,7 @@ function loadQuestion() {
     `;
 
     prevBtn.disabled = currentQuestion === 0;
-    nextBtn.textContent = currentQuestion === questions.length - 1 ? "Score Quiz" : "Next";
+    nextBtn.textContent = currentQuestion === questions.length - 1 ? "Calificar cuestionario" : "Siguiente";
 
     document.querySelectorAll('input[name="choice"]').forEach(input => {
         input.addEventListener("change", e => {
@@ -336,10 +336,10 @@ function endQuiz() {
             <div class="review-item">
                 <strong>${i + 1}. ${q.question}</strong>
                 <div class="${ans === q.correct ? "correct" : "wrong"}">
-                    Your answer: ${ans !== undefined ? q.choices[ans] : "No answer"}
+                    Tu respuesta: ${ans !== undefined ? q.choices[ans] : "No answer"}
                 </div>
                 ${ans !== q.correct
-                    ? `<div class="correct">Correct: ${q.choices[q.correct]}</div>`
+                    ? `<div class="correct">Correcta: ${q.choices[q.correct]}</div>`
                     : ""}
             </div>
         `;
@@ -353,21 +353,21 @@ function endQuiz() {
 
     quizDiv.innerHTML = `
         <div class="result ${passed ? "pass" : "fail"}">
-            Result: ${passed ? "PASS" : "FAIL"}<br>
-            Correct: ${correctCount} / ${total}<br>
-            Wrong: ${wrongAnswers}<br>
-            Percentage: ${percentage}%
+            Resultado: ${passed ? "APROBADO" : "DESAPROBADO"}<br>
+            Correctas: ${correctCount} / ${total}<br>
+            Incorrectas: ${wrongAnswers}<br>
+            Porcentaje: ${percentage}%
         </div>
 
         <div class="top-buttons">
-            <button onclick="window.location.href='index.html'">Home</button>
-            <button onclick="window.location.href='history.html'">History Quiz</button>
-            <button onclick="window.location.href='dates.html'">Dates Quiz</button>
-            <button onclick="window.location.href='general.html'">General Quiz</button>
+            <button onclick="window.location.href='index.html'">Principio</button>
+            <button onclick="window.location.href='history.html'">Cuest. de Historia</button>
+            <button onclick="window.location.href='dates.html'">Cuest. de Fechas</button>
+            <button onclick="window.location.href='general.html'">Cues. General</button>
         </div>
 
         <div class="review">
-            <h3>Quiz Review</h3>
+            <h3>Repaso del Cuestionario</h3>
             ${reviewHTML}
         </div>
     `;
@@ -379,10 +379,7 @@ function endQuiz() {
         stickyActions = document.createElement("div");
         stickyActions.id = "stickyActions";
         stickyActions.innerHTML = `
-            <button id="retakeBtnSticky">Retake Quiz</button>
-            <button id="quizBank">Quiz Bank</button>
-            <button id="previousQuiz">Prev. Quiz</button>
-            <button id="nextQuiz">Next Quiz</button>
+            <button id="retakeBtnSticky">Rehacer Cuestionario</button>
 
         `;
         document.body.appendChild(stickyActions);
