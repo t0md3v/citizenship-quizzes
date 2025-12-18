@@ -388,15 +388,6 @@ function endQuiz() {
     stickyActions.style.display = "flex";
 
     document.getElementById("retakeBtnSticky").onclick = resetQuiz;
-    document.getElementById("quizBank").onclick = () => {
-        window.location.href = "bank21.html";
-    };
-    document.getElementById("previousQuiz").onclick = () => {
-        window.location.href = "quiz3.html";
-    };
-    document.getElementById("nextQuiz").onclick = () => {
-        window.location.href = "quiz5.html";
-    };
 
     // 🎉 Confetti if passed
     if (passed && typeof confetti === "function") {
